@@ -1,0 +1,66 @@
+
+###> symfony/framework-bundle ###
+/.env
+/.env.dev
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env.prod
+/.env.prod.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> sensitive environment files ###
+# Never commit environment files with real credentials
+/.env.production
+/.env.staging
+/.env.twilio
+/.env.secrets
+/.env.development
+/.env.test
+# Backup files
+/.env.backup
+/.env.bak
+/.env.orig
+/.env.old
+/.env.save
+###< sensitive environment files ###
+
+###> twilio credentials ###
+# Never commit files containing Twilio credentials
+/twilio-config.php
+/twilio-credentials.*
+/config/twilio.*
+###< twilio credentials ###
+
+###> security and credentials ###
+# API keys and secrets
+/config/secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+# Database dumps
+*.sql
+*.dump
+*.backup
+###< security and credentials ###
+
+###> logs and temporary files ###
+# Log files
+*.log
+/logs/
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+###< logs and temporary files ###
