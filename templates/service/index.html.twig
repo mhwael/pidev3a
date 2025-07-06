@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medical Services - Salutem Medical Center{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-hospital"></i> Medical Services</h1>
+            <p>Find the best medical services and specialists</p>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<div class="filter-section">
+    <div class="container_12">
+        <div class="grid_12">
+            <div class="filter-form">
+                <form method="GET" action="{{ path('app_services') }}">
+                    <div class="grid_12">
+                        <h3 style="margin-bottom: 1rem; color: #2c3e50;">Filter Services</h3>
+                    </div>
+                    
+                    <div class="grid_3 alpha">
+                        <div class="form-group">
+                            <label class="form-label">Search</label>
+                            <input type="text" name="search" class="form-control" placeholder="Doctor name, location..." value="{{ currentSearch }}">
+                        </div>
+                    </div>
+                    
+                    <div class="grid_3">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-control">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if currentCategory == category.id %}selected{% endif %}>
+                                        {{ category.type }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid_3">
+                        <div class="form-group">
+                            <label class="form-label">Speciality</label>
+                            <select name="speciality" class="form-control">
+                                <option value="">All Specialities</option>
+                                {% for speciality in specialities %}
+                                    <option value="{{ speciality }}" {% if currentSpeciality == speciality %}selected{% endif %}>
+                                        {{ speciality }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid_3 omega">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="icon-search"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="clear"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Services List -->
+<div class="container_12">
+    <div class="grid_12">
+        {% if services is empty %}
+            <div style="text-align: center; padding: 4rem 0;">
+                <i class="icon-info-sign" style="font-size: 4rem; color: #7f8c8d; margin-bottom: 1rem;"></i>
+                <h3 style="color: #7f8c8d;">No services found</h3>
+                <p style="color: #95a5a6;">Try adjusting your filters or search terms.</p>
+                <a href="{{ path('app_services') }}" class="btn btn-primary">View All Services</a>
+            </div>
+        {% else %}
+            <div style="margin-bottom: 2rem;">
+                <h2 style="color: #2c3e50;">Available Services ({{ services|length }})</h2>
+                {% if currentSearch or currentCategory or currentSpeciality %}
+                    <p style="color: #7f8c8d;">
+                        Filtered results
+                        {% if currentSearch %} for "{{ currentSearch }}"{% endif %}
+                        {% if currentCategory %} 
+                            {% for category in categories %}
+                                {% if category.id == currentCategory %} in {{ category.type }}{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if currentSpeciality %} specializing in {{ currentSpeciality }}{% endif %}
+                    </p>
+                {% endif %}
+            </div>
+            
+            {% for service in services %}
+                <div class="service-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <div>
+                            <div class="service-name">{{ service.name }}</div>
+                            <div class="service-speciality">{{ service.speciality }}</div>
+                        </div>
+                        <span class="service-category">{{ service.categorie.type }}</span>
+                    </div>
+                    
+                    {% if service.description %}
+                        <p style="color: #7f8c8d; margin-bottom: 1rem;">{{ service.description|slice(0, 200) }}{% if service.description|length > 200 %}...{% endif %}</p>
+                    {% endif %}
+                    
+                    <div class="service-details">
+                        <div class="service-detail">
+                            <i class="icon-map-marker"></i>
+                            <span>{{ service.location|slice(0, 80) }}{% if service.location|length > 80 %}...{% endif %}</span>
+                        </div>
+                        
+                        {% if service.phone %}
+                        <div class="service-detail">
+                            <i class="icon-phone"></i>
+                            <a href="tel:{{ service.phone }}" style="color: #3498db;">{{ service.phone }}</a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if service.email %}
+                        <div class="service-detail">
+                            <i class="icon-envelope"></i>
+                            <a href="mailto:{{ service.email }}" style="color: #3498db;">{{ service.email }}</a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if service.price %}
+                        <div class="service-detail">
+                            <i class="icon-money"></i>
+                            <span style="font-weight: bold; color: #27ae60;">Starting from ${{ service.price }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if service.availableTimes is not empty %}
+                        <div style="background: #ecf0f1; padding: 0.75rem; border-radius: 4px; margin-top: 1rem;">
+                            <strong style="color: #2c3e50;">Available Times:</strong><br>
+                            {% for time in service.availableTimes %}
+                                <span style="background: #34495e; color: white; padding: 0.25rem 0.5rem; border-radius: 15px; font-size: 0.8rem; margin: 0.25rem 0.25rem 0.25rem 0; display: inline-block;">{{ time }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <a href="{{ path('app_service_show', {'id': service.id}) }}" class="btn btn-primary">
+                            <i class="icon-info-sign"></i> View Details
+                        </a>
+                        <a href="{{ path('app_appointment_book_service', {'id': service.id}) }}" class="btn" style="background: #e67e22; color: white;">
+                            <i class="icon-calendar"></i> Book Appointment
+                        </a>
+                        {% if service.phone %}
+                            <a href="tel:{{ service.phone }}" class="btn" style="background: #27ae60; color: white;">
+                                <i class="icon-phone"></i> Call Now
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

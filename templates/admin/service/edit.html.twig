@@ -1,0 +1,549 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Service - {{ service.name }} - Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="admin-page-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2><i class="icon-edit"></i> Edit Service</h2>
+            <p>Update service information and availability schedule</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="{{ path('admin_service_show', {'id': service.id}) }}" class="btn btn-info">
+                <i class="icon-eye"></i> View
+            </a>
+            <a href="{{ path('admin_service_index') }}" class="btn btn-secondary">
+                <i class="icon-arrow-left"></i> Back to Services
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="service-form-container">
+    <div class="form-card">
+        {{ form_start(form) }}
+        
+        <!-- Basic Information Section -->
+        <div class="form-section">
+            <h3><i class="icon-user-md"></i> Doctor Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form_label(form.name, 'Doctor Name', {'class': 'form-label required'}) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.name) }}
+                    <small class="form-help">Enter the full name of the doctor</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    {{ form_label(form.speciality, 'Medical Speciality', {'class': 'form-label required'}) }}
+                    {{ form_widget(form.speciality, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.speciality) }}
+                </div>
+                <div class="form-group half-width">
+                    {{ form_label(form.categorie, 'Category', {'class': 'form-label required'}) }}
+                    {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.categorie) }}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form_label(form.location, 'Practice Location', {'class': 'form-label required'}) }}
+                    {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.location) }}
+                    <small class="form-help">Enter the complete address where the doctor practices</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description', {'class': 'form-label'}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.description) }}
+                    <small class="form-help">Additional information about the doctor's experience and services</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="form-section">
+            <h3><i class="icon-phone"></i> Contact Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group half-width">
+                    {{ form_label(form.phone, 'Phone Number', {'class': 'form-label'}) }}
+                    {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.phone) }}
+                </div>
+                <div class="form-group half-width">
+                    {{ form_label(form.email, 'Email Address', {'class': 'form-label'}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    {{ form_label(form.price, 'Consultation Fee', {'class': 'form-label'}) }}
+                    {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.price) }}
+                    <small class="form-help">Cost per consultation (optional)</small>
+                </div>
+                <div class="form-group half-width" style="display: flex; align-items: center; margin-top: 2rem;">
+                    {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input', 'style': 'margin-right: 0.5rem;'}}) }}
+                    {{ form_label(form.isActive, 'Active Service', {'class': 'form-check-label'}) }}
+                    {{ form_errors(form.isActive) }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div class="form-section">
+            <h3><i class="icon-calendar"></i> Availability Schedule</h3>
+            
+            <div class="schedule-picker">
+                <div class="schedule-info">
+                    <p><i class="icon-info-circle"></i> Update the doctor's availability schedule using the interface below:</p>
+                </div>
+
+                <!-- Simple Day/Time Selector -->
+                <div class="availability-container">
+                    <div class="weekdays-grid">
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="monday">
+                                <span>Monday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="17:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="tuesday">
+                                <span>Tuesday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="17:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="wednesday">
+                                <span>Wednesday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="17:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="thursday">
+                                <span>Thursday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="17:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="friday">
+                                <span>Friday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="17:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="saturday">
+                                <span>Saturday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="13:00">
+                            </div>
+                        </div>
+
+                        <div class="weekday-item">
+                            <label class="weekday-label">
+                                <input type="checkbox" class="weekday-check" value="sunday">
+                                <span>Sunday</span>
+                            </label>
+                            <div class="time-range">
+                                <input type="time" class="start-time" value="09:00">
+                                <span>to</span>
+                                <input type="time" class="end-time" value="13:00">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="schedule-preview">
+                        <h4><i class="icon-eye"></i> Schedule Preview</h4>
+                        <div id="schedulePreview" class="preview-content">
+                            <em>Select days and times to see the schedule preview</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden field for form data -->
+                {{ form_widget(form.availableTimesString, {'attr': {'style': 'display: none;'}}) }}
+                {{ form_errors(form.availableTimesString) }}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary btn-lg'}}) }}
+            <a href="{{ path('admin_service_index') }}" class="btn btn-secondary btn-lg">Cancel</a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<style>
+.service-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.form-section h3 {
+    margin: 0 0 1.5rem 0;
+    color: #2c3e50;
+    font-size: 1.3rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-row .form-group.half-width {
+    flex: 0 0 calc(50% - 0.75rem);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: #e74c3c;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Schedule Picker Styles */
+.schedule-picker {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.schedule-info {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #e3f2fd;
+    border-radius: 6px;
+    border-left: 4px solid #2196f3;
+}
+
+.schedule-info p {
+    margin: 0;
+    color: #1565c0;
+}
+
+.weekdays-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.weekday-item {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.weekday-item:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.weekday-item.active {
+    border-color: #27ae60;
+    background: #f0fff4;
+}
+
+.weekday-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    cursor: pointer;
+}
+
+.weekday-check {
+    margin: 0;
+}
+
+.time-range {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.weekday-item.active .time-range {
+    opacity: 1;
+}
+
+.time-range input[type="time"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.time-range span {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.schedule-preview {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.schedule-preview h4 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.preview-content {
+    line-height: 1.6;
+}
+
+.preview-content .day-schedule {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.preview-content .day-schedule:last-child {
+    border-bottom: none;
+}
+
+.form-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-row .form-group.half-width {
+        flex: 1;
+    }
+    
+    .weekdays-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const weekdayItems = document.querySelectorAll('.weekday-item');
+    const schedulePreview = document.getElementById('schedulePreview');
+    const hiddenField = document.querySelector('#{{ form.availableTimesString.vars.id }}');
+
+    // Load existing schedule data if available
+    const existingSchedule = {{ service.availableTimes|default('{}')|json_encode|raw }};
+    loadExistingSchedule(existingSchedule);
+
+    // Initialize
+    updateSchedulePreview();
+
+    // Add event listeners to checkboxes and time inputs
+    weekdayItems.forEach(item => {
+        const checkbox = item.querySelector('.weekday-check');
+        const timeInputs = item.querySelectorAll('input[type="time"]');
+
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+            updateSchedulePreview();
+        });
+
+        timeInputs.forEach(input => {
+            input.addEventListener('change', updateSchedulePreview);
+        });
+    });
+
+    function loadExistingSchedule(schedule) {
+        if (typeof schedule === 'object' && schedule !== null) {
+            weekdayItems.forEach(item => {
+                const checkbox = item.querySelector('.weekday-check');
+                const day = checkbox.value;
+                
+                if (schedule[day]) {
+                    checkbox.checked = true;
+                    item.classList.add('active');
+                    
+                    const startTime = item.querySelector('.start-time');
+                    const endTime = item.querySelector('.end-time');
+                    
+                    if (schedule[day].start) {
+                        startTime.value = schedule[day].start;
+                    }
+                    if (schedule[day].end) {
+                        endTime.value = schedule[day].end;
+                    }
+                }
+            });
+        }
+    }
+
+    function updateSchedulePreview() {
+        const schedule = {};
+        const scheduleText = [];
+
+        weekdayItems.forEach(item => {
+            const checkbox = item.querySelector('.weekday-check');
+            const day = checkbox.value;
+            
+            if (checkbox.checked) {
+                const startTime = item.querySelector('.start-time').value;
+                const endTime = item.querySelector('.end-time').value;
+                
+                schedule[day] = {
+                    start: startTime,
+                    end: endTime
+                };
+
+                const dayName = day.charAt(0).toUpperCase() + day.slice(1);
+                scheduleText.push(`${dayName}: ${startTime} - ${endTime}`);
+            }
+        });
+
+        // Update preview
+        if (scheduleText.length > 0) {
+            schedulePreview.innerHTML = scheduleText.map(text => 
+                `<div class="day-schedule"><strong>${text}</strong></div>`
+            ).join('');
+        } else {
+            schedulePreview.innerHTML = '<em>Select days and times to see the schedule preview</em>';
+        }
+
+        // Update hidden field with JSON data
+        hiddenField.value = JSON.stringify(schedule);
+    }
+});
+</script>
+{% endblock %}

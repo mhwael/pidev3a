@@ -1,0 +1,435 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Category: {{ categorie.type }} - Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="admin-content">
+    <div class="container_12">
+        <div class="grid_12">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>
+                    <i class="icon-edit"></i> Edit Category: 
+                    {% if categorie.type == 'Home Visit' %}
+                        <i class="icon-home" style="color: #28a745;"></i>
+                    {% elseif categorie.type == 'In Cabinet' %}
+                        <i class="icon-building" style="color: #17a2b8;"></i>
+                    {% elseif categorie.type == 'Online' %}
+                        <i class="icon-laptop" style="color: #6f42c1;"></i>
+                    {% endif %}
+                    {{ categorie.type }}
+                </h1>
+                <div class="btn-group">
+                    <a href="{{ path('admin_categorie_show', {'id': categorie.id}) }}" class="btn btn-info">
+                        <i class="icon-eye"></i> View Details
+                    </a>
+                    <a href="{{ path('admin_categorie_index') }}" class="btn btn-secondary">
+                        <i class="icon-arrow-left"></i> Back to Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <i class="icon-check-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    <i class="icon-exclamation-triangle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="grid_8 alpha">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="icon-edit"></i> Edit Category Details</h2>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'category-form'}}) }}
+                            <div class="form-group">
+                                {{ form_label(form.type, 'Category Type', {'attr': {'class': 'form-label required'}}) }}
+                                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.type) }}
+                                <small class="form-text">Select the type of medical consultation this category represents.</small>
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.description, 'Description', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.description, {'attr': {
+                                    'class': 'form-control', 
+                                    'rows': 5, 
+                                    'placeholder': 'Enter a detailed description of this category type and what services it includes...'
+                                }}) }}
+                                {{ form_errors(form.description) }}
+                                <small class="form-text">Optional: Provide a description of what this consultation type includes and any specific details.</small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="icon-save"></i> Update Category
+                                </button>
+                                <a href="{{ path('admin_categorie_show', {'id': categorie.id}) }}" class="btn btn-secondary">
+                                    <i class="icon-times"></i> Cancel
+                                </a>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid_4 omega">
+                <!-- Current Information -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="icon-info-circle"></i> Current Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="current-info">
+                            <div class="info-item">
+                                <label>Category ID</label>
+                                <span class="badge bg-light">#{{ categorie.id }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label>Services Count</label>
+                                <span class="stats-badge">{{ categorie.servicesCount }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label>Created</label>
+                                <div style="color: #6c757d; font-size: 0.875rem;">
+                                    {{ categorie.createdAt|date('M j, Y') }} at {{ categorie.createdAt|date('g:i A') }}
+                                </div>
+                            </div>
+                            
+                            {% if categorie.updatedAt %}
+                                <div class="info-item">
+                                    <label>Last Updated</label>
+                                    <div style="color: #6c757d; font-size: 0.875rem;">
+                                        {{ categorie.updatedAt|date('M j, Y') }} at {{ categorie.updatedAt|date('g:i A') }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Guide -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="icon-question-circle"></i> Category Types</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="guide-content">
+                            <div class="category-guide-item {{ categorie.type == 'Home Visit' ? 'active' : '' }}">
+                                <div class="guide-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                                    <i class="icon-home"></i>
+                                </div>
+                                <div class="guide-text">
+                                    <h4>Home Visit</h4>
+                                    <p>At patient's location</p>
+                                </div>
+                            </div>
+                            
+                            <div class="category-guide-item {{ categorie.type == 'In Cabinet' ? 'active' : '' }}">
+                                <div class="guide-icon" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);">
+                                    <i class="icon-building"></i>
+                                </div>
+                                <div class="guide-text">
+                                    <h4>In Cabinet</h4>
+                                    <p>At medical office</p>
+                                </div>
+                            </div>
+                            
+                            <div class="category-guide-item {{ categorie.type == 'Online' ? 'active' : '' }}">
+                                <div class="guide-icon" style="background: linear-gradient(135deg, #6f42c1 0%, #764ba2 100%);">
+                                    <i class="icon-laptop"></i>
+                                </div>
+                                <div class="guide-text">
+                                    <h4>Online</h4>
+                                    <p>Virtual consultation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                {% if categorie.servicesCount > 0 %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="icon-stethoscope"></i> Related Services</h3>
+                        </div>
+                        <div class="card-body">
+                            <p style="margin-bottom: 1rem; color: #6c757d; font-size: 0.875rem;">
+                                This category has <strong>{{ categorie.servicesCount }}</strong> 
+                                service{% if categorie.servicesCount != 1 %}s{% endif %}.
+                            </p>
+                            <a href="{{ path('admin_service_index') }}?category={{ categorie.id }}" class="btn btn-primary btn-block">
+                                <i class="icon-list"></i> View Services
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+            <div>
+                <h4>Basic Information</h4>
+                <p><strong>ID:</strong> {{ categorie.id }}</p>
+                <p><strong>Type:</strong> {{ categorie.type }}</p>
+                <p><strong>Services:</strong> {{ categorie.servicesCount }} service(s)</p>
+            </div>
+            <div>
+                <h4>Timestamps</h4>
+                <p><strong>Created:</strong> {{ categorie.createdAt|date('Y-m-d H:i:s') }}</p>
+                <p><strong>Updated:</strong> 
+                    {% if categorie.updatedAt %}
+                        {{ categorie.updatedAt|date('Y-m-d H:i:s') }}
+                    {% else %}
+                        <em>Never updated</em>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if categorie.servicesCount > 0 %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="icon-user-md"></i> Services in this Category ({{ categorie.servicesCount }})</h3>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            <i class="icon-info-circle"></i> This category has {{ categorie.servicesCount }} service(s) assigned to it. 
+            <a href="{{ path('admin_service_index') }}">Manage services</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #e9ecef;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        color: #495057;
+        font-size: 1.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .category-form {
+        max-width: 100%;
+    }
+    
+    .form-group {
+        margin-bottom: 2rem;
+    }
+    
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-label.required::after {
+        content: " *";
+        color: #dc3545;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .form-control:hover {
+        border-color: #adb5bd;
+    }
+    
+    .form-text {
+        display: block;
+        margin-top: 0.5rem;
+        color: #6c757d;
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f3f4;
+    }
+    
+    .current-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .current-info .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 3px solid #667eea;
+    }
+    
+    .current-info .info-item label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+    
+    .stats-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        min-width: 2rem;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .guide-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .category-guide-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .category-guide-item:hover {
+        background: #e9ecef;
+        border-left-color: #667eea;
+    }
+    
+    .category-guide-item.active {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        border-left-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    }
+    
+    .guide-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .guide-text h4 {
+        margin: 0 0 0.25rem 0;
+        color: #495057;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    .guide-text p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.8rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn-block {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa !important;
+        color: #6c757d !important;
+    }
+    
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: none;
+    }
+    
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+    
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn-group {
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}

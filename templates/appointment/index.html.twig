@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-calendar"></i> Book an Appointment</h1>
+            <p>Choose a service and schedule your appointment with our medical experts</p>
+        </div>
+    </div>
+</section>
+
+<div class="container_12">
+    <div class="grid_12">
+        <div class="content-section">
+            <div class="page-header">
+                <h2>Select a Service</h2>
+                <p>Choose from our available medical services to book your appointment</p>
+            </div>
+
+            <div class="services-grid">
+                {% for service in services %}
+                    <div class="service-card">
+                        <div class="service-header">
+                            <h3>{{ service.name }}</h3>
+                            <span class="speciality-badge">{{ service.speciality }}</span>
+                        </div>
+                        
+                        <div class="service-info">
+                            <p><i class="icon-location-arrow"></i> {{ service.location }}</p>
+                            {% if service.price %}
+                                <p><i class="icon-money"></i> ${{ service.price }}</p>
+                            {% endif %}
+                            {% if service.description %}
+                                <p class="service-description">{{ service.description|slice(0, 100) }}{% if service.description|length > 100 %}...{% endif %}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="service-actions">
+                            <a href="{{ path('app_service_show', {'id': service.id}) }}" class="btn btn-secondary btn-sm">
+                                <i class="icon-info-circle"></i> Details
+                            </a>
+                            <a href="{{ path('app_appointment_book_service', {'id': service.id}) }}" class="btn btn-primary">
+                                <i class="icon-calendar"></i> Book Appointment
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <h4><i class="icon-info-circle"></i> No Services Available</h4>
+                        <p>Currently, there are no active services available for booking. Please contact us directly for assistance.</p>
+                        <a href="{{ path('app_contacts') }}" class="btn btn-primary">Contact Us</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="appointment-options">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="icon-search"></i> Other Options</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="option-buttons">
+                            <a href="{{ path('app_appointment_book') }}" class="btn btn-info">
+                                <i class="icon-edit"></i> Book General Appointment
+                            </a>
+                            <a href="{{ path('app_my_appointments') }}" class="btn btn-warning">
+                                <i class="icon-list"></i> View My Appointments
+                            </a>
+                            <a href="{{ path('app_services') }}" class="btn btn-secondary">
+                                <i class="icon-hospital"></i> Browse All Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.service-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.service-header h3 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.speciality-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.service-info {
+    margin-bottom: 1.5rem;
+}
+
+.service-info p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.service-info i {
+    color: #667eea;
+    margin-right: 0.5rem;
+    width: 16px;
+}
+
+.service-description {
+    font-style: italic;
+    color: #777;
+}
+
+.service-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.appointment-options {
+    margin-top: 3rem;
+}
+
+.option-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.option-buttons .btn {
+    flex: 1;
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .service-actions {
+        flex-direction: column;
+    }
+    
+    .option-buttons {
+        flex-direction: column;
+    }
+    
+    .option-buttons .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

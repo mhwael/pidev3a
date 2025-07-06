@@ -1,0 +1,181 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Appointments Management{% endblock %}
+
+{% block body %}
+<div class="admin-content">
+    <div class="container_12">
+        <div class="grid_12">
+            <div class="page-header">
+                <h1><i class="icon-calendar"></i> Appointments Management</h1>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="stats-card">
+                        <h4>Pending: {{ stats.pending }}</h4>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Confirmed: {{ stats.confirmed }}</h4>
+                    </div>
+                </div>
+            </div>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <i class="icon-check-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    <i class="icon-exclamation-triangle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            <!-- Filters -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2><i class="icon-filter"></i> Filter Appointments</h2>
+                </div>
+                <div class="card-body">
+                    <form method="GET" style="display: flex; gap: 1rem; align-items: end;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Status</label>
+                            <select name="status" class="form-control" onchange="this.form.submit()">
+                                <option value="">All Statuses</option>
+                                <option value="pending" {% if currentStatus == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="confirmed" {% if currentStatus == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                <option value="completed" {% if currentStatus == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="cancelled" {% if currentStatus == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                            <label>Search</label>
+                            <input type="text" name="search" value="{{ currentSearch }}" 
+                                   placeholder="Patient name, email, or service..." 
+                                   class="form-control">
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="icon-search"></i> Filter
+                            </button>
+                            {% if currentStatus or currentSearch %}
+                                <a href="{{ path('admin_appointment_index') }}" class="btn btn-secondary">
+                                    <i class="icon-remove"></i> Clear
+                                </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="icon-list"></i> All Appointments ({{ appointments|length }})</h2>
+                </div>
+                <div class="card-body">
+                    {% if appointments is empty %}
+                        <div style="text-align: center; padding: 4rem 0;">
+                            <i class="icon-calendar" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                            <h3 style="color: #6c757d; margin-bottom: 1rem;">No appointments found</h3>
+                            <p style="color: #6c757d; margin-bottom: 2rem;">
+                                {% if currentStatus or currentSearch %}
+                                    Try adjusting your filters to see more results.
+                                {% else %}
+                                    No appointments have been submitted yet.
+                                {% endif %}
+                            </p>
+                            {% if currentStatus or currentSearch %}
+                                <a href="{{ path('admin_appointment_index') }}" class="btn btn-primary">
+                                    <i class="icon-refresh"></i> Show All Appointments
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="icon-user"></i> Patient</th>
+                                        <th><i class="icon-user-md"></i> Service</th>
+                                        <th><i class="icon-calendar"></i> Date & Time</th>
+                                        <th><i class="icon-info-circle"></i> Status</th>
+                                        <th><i class="icon-clock-o"></i> Created</th>
+                                        <th><i class="icon-cogs"></i> Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ appointment.patientName }}</strong><br>
+                                            <small style="color: #6c757d;">
+                                                <i class="icon-envelope"></i> {{ appointment.email }}
+                                                {% if appointment.phone %}<br><i class="icon-phone"></i> {{ appointment.phone }}{% endif %}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <strong>{{ appointment.service.name }}</strong><br>
+                                            <small style="color: #6c757d;">{{ appointment.service.speciality }}</small>
+                                        </td>
+                                        <td>
+                                            <strong>{{ appointment.formattedDate }}</strong><br>
+                                            <small style="color: #6c757d;">{{ appointment.formattedTime }}</small>
+                                        </td>
+                                        <td>
+                                            {% if appointment.status == 'pending' %}
+                                                <span class="badge bg-warning"><i class="icon-clock-o"></i> Pending</span>
+                                            {% elseif appointment.status == 'confirmed' %}
+                                                <span class="badge bg-info"><i class="icon-check"></i> Confirmed</span>
+                                            {% elseif appointment.status == 'completed' %}
+                                                <span class="badge bg-success"><i class="icon-check-circle"></i> Completed</span>
+                                            {% else %}
+                                                <span class="badge bg-danger"><i class="icon-times"></i> Cancelled</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>{{ appointment.createdAt|date('M d, Y') }}</strong><br>
+                                            <small style="color: #6c757d;">{{ appointment.createdAt|date('H:i') }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ path('admin_appointment_show', {'id': appointment.id}) }}" 
+                                                   class="btn btn-sm btn-info" title="View Details">
+                                                    <i class="icon-eye"></i>
+                                                </a>
+                                                {% if appointment.status == 'pending' %}
+                                                    <form method="POST" action="{{ path('admin_appointment_confirm', {'id': appointment.id}) }}">
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Confirm" 
+                                                                onclick="return confirm('Confirm this appointment?')">
+                                                            <i class="icon-check"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form method="POST" action="{{ path('admin_appointment_cancel', {'id': appointment.id}) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger" title="Cancel" 
+                                                                onclick="return confirm('Cancel this appointment?')">
+                                                            <i class="icon-times"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                {% if appointment.status == 'confirmed' %}
+                                                    <form method="POST" action="{{ path('admin_appointment_complete', {'id': appointment.id}) }}">
+                                                        <button type="submit" class="btn btn-sm btn-primary" title="Mark Complete" 
+                                                                onclick="return confirm('Mark this appointment as completed?')">
+                                                            <i class="icon-check-circle"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

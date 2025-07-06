@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-calendar"></i> Book Appointment</h1>
+            <p>Fill out the form below to schedule your medical appointment</p>
+        </div>
+    </div>
+</section>
+
+<div class="container_12">
+    <div class="grid_8">
+        <div class="appointment-form-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="icon-edit"></i> Appointment Details</h2>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.service) }}
+                            {{ form_widget(form.service) }}
+                            {{ form_errors(form.service) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.patientName) }}
+                            {{ form_widget(form.patientName) }}
+                            {{ form_errors(form.patientName) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.phone) }}
+                            {{ form_widget(form.phone) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.patientAge) }}
+                            {{ form_widget(form.patientAge) }}
+                            {{ form_errors(form.patientAge) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.gender) }}
+                            {{ form_widget(form.gender) }}
+                            {{ form_errors(form.gender) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.preferredDate) }}
+                            {{ form_widget(form.preferredDate) }}
+                            {{ form_errors(form.preferredDate) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.preferredTime) }}
+                            {{ form_widget(form.preferredTime) }}
+                            {{ form_errors(form.preferredTime) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.medicalHistory) }}
+                            {{ form_widget(form.medicalHistory) }}
+                            {{ form_errors(form.medicalHistory) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.message) }}
+                            {{ form_widget(form.message) }}
+                            {{ form_errors(form.message) }}
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        {{ form_widget(form.submit) }}
+                        <a href="{{ path('app_appointments') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grid_4">
+        <div class="appointment-sidebar">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-info-circle"></i> Important Information</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="info-list">
+                        <li><i class="icon-check"></i> Appointments are subject to confirmation</li>
+                        <li><i class="icon-check"></i> You will receive email confirmation</li>
+                        <li><i class="icon-check"></i> Please arrive 15 minutes early</li>
+                        <li><i class="icon-check"></i> Bring valid ID and insurance card</li>
+                        <li><i class="icon-check"></i> Cancel at least 24 hours in advance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-phone"></i> Need Help?</h3>
+                </div>
+                <div class="card-body">
+                    <p>If you need assistance with booking, please contact us:</p>
+                    <div class="contact-info">
+                        <p><i class="icon-phone"></i> <strong>Phone:</strong> (555) 123-4567</p>
+                        <p><i class="icon-envelope"></i> <strong>Email:</strong> appointments@salutem-medical.com</p>
+                    </div>
+                    <a href="{{ path('app_contacts') }}" class="btn btn-info btn-sm">Contact Form</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.appointment-form-container {
+    margin: 2rem 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-row .form-group.half-width {
+    flex: 0 0 calc(50% - 0.5rem);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+}
+
+.appointment-sidebar {
+    margin: 2rem 0;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+}
+
+.info-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.info-list li:last-child {
+    border-bottom: none;
+}
+
+.info-list i {
+    color: #28a745;
+    margin-right: 0.5rem;
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+}
+
+.contact-info i {
+    color: #667eea;
+    margin-right: 0.5rem;
+    width: 16px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-row .form-group.half-width {
+        flex: 1;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

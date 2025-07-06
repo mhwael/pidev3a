@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.carouFredSel-6.1.0.js') }}"></script>
+    <script src="{{ asset('js/jquery.touchSwipe.min.js') }}"></script>
+    <script src="{{ asset('js/accordion.js') }}"></script>
+    <script>
+        $(window).load( function(){
+            //  Responsive layout, resizing the items
+            $('#carousel').carouFredSel({
+                auto: false,
+                responsive: true,
+                width: '100%',      
+                scroll: 1,
+                prev: '#prev',
+                next: '#next',
+                pagination: false,
+                mousewheel: false,
+                swipe: {
+                    onMouse: true,
+                    onTouch: true
+                },
+                items: {
+                  width:300,
+                  height: 'auto',   //  optionally resize item-height
+                    visible: {
+                        min: 1,
+                        max: 3
+                    }
+                }
+            });
+
+            $("#accordion").accordion({ header: "h5" });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<!--=======content================================-->
+<div class="pic_section">
+    <div class="container_12">
+        <div class="grid_12">
+            <h2>Welcome!</h2>
+            <h3>Meet our medical specialties:</h3>
+            <ul class="listWithMarker mobile_bottom_mar">
+                <li><strong class="icon-check"></strong><a href="#">Family Medicine / General Practice</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Hospital Medicine</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Internal Medicine</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Allergy &amp; Asthma</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Anesthesiology</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Audiology &amp; Hearing Aids</a></li>
+                <li><strong class="icon-check"></strong><a href="#">Cardiology / Heartcare</a></li>
+            </ul>
+            <a href="#" class="more_btn">view all</a>
+        </div>
+    </div>
+</div>
+
+<div class="gray_bg txt_cntr">
+    <div class="container_12">
+        <div class="grid_12">
+            <p class="splash_title1">Salutem MC strives to provide a high standard of healthcare</p>
+            <p class="splash_title2">in a caring, friendly and familiar environment</p>
+            <div class="grid_3 alpha">
+                <div class="splash_banner1">
+                    <div class="img1">
+                        <img src="{{ asset('images/page1_icon1.png') }}" alt="" class="no_resize">
+                    </div>
+                    <h3 class="v2"><a href="#">Vestibulum iaculis</a></h3>
+                    <p class="txt1">Sed ut persde omnis iste natus error sit voluptatem accusantium doloremque laudantiuotam rem aperiam, eaque ipsa.</p>
+                </div>
+            </div>
+            <div class="grid_3">
+                <div class="splash_banner1">
+                    <div class="img1">
+                        <img src="{{ asset('images/page1_icon2.png') }}" alt="" class="no_resize">
+                    </div>
+                    <h3 class="v2"><a href="#">Proin dictum</a></h3>
+                    <p class="txt1">Sed ut persde omnis iste natus error sit voluptatem accusantium doloremque laudantiuotam rem aperiam, eaque ipsa.</p>
+                </div>
+            </div>
+            <div class="grid_3">
+                <div class="splash_banner1">
+                    <div class="img1">
+                        <img src="{{ asset('images/page1_icon3.png') }}" alt="" class="no_resize">
+                    </div>
+                    <h3 class="v2"><a href="#">Elementum velit</a></h3>
+                    <p class="txt1">Sed ut persde omnis iste natus error sit voluptatem accusantium doloremque laudantiuotam rem aperiam, eaque ipsa.</p>
+                </div>
+            </div>
+            <div class="grid_3 omega">
+                <div class="splash_banner1">
+                    <div class="img1">
+                        <img src="{{ asset('images/page1_icon4.png') }}" alt="" class="no_resize">
+                    </div>
+                    <h3 class="v2"><a href="#">Fusce euismod</a></h3>
+                    <p class="txt1">Sed ut persde omnis iste natus error sit voluptatem accusantium doloremque laudantiuotam rem aperiam, eaque ipsa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper marBot1">
+    <div class="container_12">
+        <div class="grid_12">
+            <div class="grid_7 alpha mobile_bottom_mar">
+                <h2>Our doctors advice</h2>
+
+                <div class="wrapper">
+                    <img src="{{ asset('images/page1_pic1.jpg') }}" alt="" class="img2">
+                    <div class="box">
+                        <h3><a href="#">Perspiciatiste natus erroratem</a></h3>
+                        <p class="comments_txt"><a href="#" class="link3">Stella White</a> <span class="vline1"></span><a href="#" class="comments_btn"><strong class="icon-comment"></strong>2</a></p>
+                        <p>Quisque nulla. Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursus leo vel metus. Nulla facilisi. Aenean nec eros. <a href="#" class="more_btn2"><strong class="icon-circle-arrow-right"></strong></a></p>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <img src="{{ asset('images/page1_pic2.jpg') }}" alt="" class="img2">
+                    <div class="box">
+                        <h3><a href="#">Perspiciatiste natus erroratem</a></h3>
+                        <p class="comments_txt"><a href="#" class="link3">Robert Smith</a> <span class="vline1"></span><a href="#" class="comments_btn"><strong class="icon-comment"></strong>2</a></p>
+                        <p>Quisque nulla. Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursus leo vel metus. Nulla facilisi. Aenean nec eros. <a href="#" class="more_btn2"><strong class="icon-circle-arrow-right"></strong></a></p>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <img src="{{ asset('images/page1_pic3.jpg') }}" alt="" class="img2">
+                    <div class="box">
+                        <h3><a href="#">Perspiciatiste natus erroratem</a></h3>
+                        <p class="comments_txt"><a href="#" class="link3">Simon True</a> <span class="vline1"></span><a href="#" class="comments_btn"><strong class="icon-comment"></strong>2</a></p>
+                        <p>Quisque nulla. Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursus leo vel metus. Nulla facilisi. Aenean nec eros. <a href="#" class="more_btn2"><strong class="icon-circle-arrow-right"></strong></a></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid_4 prefix_1 omega">
+                <h2>We'll treat you right</h2>
+                <div id="accordion">
+                    <div>
+                        <h5><a href="#">Cum sociis natoque <span class="hide2">pibusnis</span></a></h5>
+                        <div>
+                            <p>Dis partrient montes, nasceturdui. Fusce feugiat malesuada odio. <span class="hide2">Morbi nunc odio, gravida at, cursus nec, luctus a, lorem.</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5><a href="#">perspiciatis unde <span class="hide2">omnis  natus</span> </a></h5>
+                        <div>
+                            <p>Dis partrient montes, nasceturdui. Fusce feugiat malesuada odio. <span class="hide2">Morbi nunc odio, gravida at, cursus nec, luctus a, lorem.</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5><a href="#">sit voluptatem <span class="hide2">Dis partrient</span></a></h5>
+                        <div>
+                            <p>Dis partrient montes, nasceturdui. Fusce feugiat malesuada odio. <span class="hide2">Morbi nunc odio, gravida at, cursus nec, luctus a, lorem.</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5><a href="#">nasceturdui <span class="hide2">Fusce feugiat</span></a></h5>
+                        <div>
+                            <p>Dis partrient montes, nasceturdui. Fusce feugiat malesuada odio. <span class="hide2">Morbi nunc odio, gravida at, cursus nec, luctus a, lorem.</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5><a href="#">malesuada odio. <span class="hide2">Morbi nunc odio</span></a></h5>
+                        <div>
+                            <p>Dis partrient montes, nasceturdui. Fusce feugiat malesuada odio. <span class="hide2">Morbi nunc odio, gravida at, cursus nec, luctus a, lorem.</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="v5">Patients say<strong class="icon-comment v2"></strong></h2>
+                <p class="say_txt1">Eaque ipsa quae ab illo inveritatis et quasi architecto beatae vitae.</p>
+                <p class="say_txt2">"Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursleo vel metus. Nulla facilisi. Aenean nec eros. Vestie ipsum primis..."</p>
+                <p class="say_txt3">Kate White, the flu</p>
+                <div class="clear"></div>
+                <a href="#" class="more_btn3">See full discussion<strong class="icon-circle-arrow-right"></strong></a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="gray_bg mar_bot0">
+    <div class="container_12">
+        <div class="grid_12">
+            <h2>Protect your family</h2>
+            <div class="list_carousel responsive">
+                <ul id="carousel">
+                    <li>
+                        <img src="{{ asset('images/page1_pic4.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{{ asset('images/page1_pic5.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{{ asset('images/page1_pic6.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{{ asset('images/page1_pic4.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{{ asset('images/page1_pic5.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{{ asset('images/page1_pic6.jpg') }}" alt="">
+                        <div class="img_title1">
+                            <p><a href="#">Accusantium dolore</a></p>
+                            <p>laudantiuotam rem aperiam, eaque</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <a class="prev" id="prev"  href="javascript:;"></a>
+                <a class="next" id="next"  href="javascript:;"></a> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=======footer=================================-->
+<footer>
+    <div class="main-footer">
+        <div class="container_12">
+            <div class="grid_12">
+                <h2 class="h2_footer">Get in  Touch</h2>
+                <p>Sed ut perspiciatis unde omnis is natus error sit voluptantium doloremqtium, totam rem aperiam, eaque ipsa quae abtore veritatis et quasi architecto beatae vitae dicta.</p>
+                <ul class="soc_icons">
+                    <li><a href="#"><i class="icon-google-plus"></i></a></li>
+                    <li><a href="#"><i class="icon-twitter"></i></a></li>
+                    <li><a href="#"><i class="icon-facebook"></i></a></li>
+                    <li><a href="#"><i class="icon-pinterest"></i></a></li>
+                    <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                    <li><a href="#"><i class="icon-rss"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer_priv">
+        <div class="container_12">
+            <div class="grid_10 prefix_1">
+                <p>SALUTEM. Medical Clinic &copy; {{ "now"|date("Y") }} | <a href="#">Privacy policy</a></p>
+            </div>
+        </div>
+    </div>  
+</footer>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+      // Initialize the gallery
+      $('.magnifier2').touchTouch();
+    });
+</script>
+{% endblock %}

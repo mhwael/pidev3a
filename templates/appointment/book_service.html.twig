@@ -1,0 +1,331 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-calendar"></i> Book Appointment</h1>
+            <p>Schedule an appointment with {{ service.name }}</p>
+        </div>
+    </div>
+</section>
+
+<div class="container_12">
+    <div class="grid_8">
+        <div class="service-info-card">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="icon-user-md"></i> {{ service.name }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="service-details">
+                        <div class="detail-item">
+                            <strong>Speciality:</strong> 
+                            <span class="speciality-badge">{{ service.speciality }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Location:</strong> {{ service.location }}
+                        </div>
+                        {% if service.price %}
+                        <div class="detail-item">
+                            <strong>Consultation Fee:</strong> ${{ service.price }}
+                        </div>
+                        {% endif %}
+                        {% if service.description %}
+                        <div class="detail-item">
+                            <strong>About:</strong> {{ service.description }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="appointment-form-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-edit"></i> Appointment Details</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    
+                    {{ form_widget(form.service, {'attr': {'style': 'display: none;'}}) }}
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.patientName) }}
+                            {{ form_widget(form.patientName) }}
+                            {{ form_errors(form.patientName) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.phone) }}
+                            {{ form_widget(form.phone) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.patientAge) }}
+                            {{ form_widget(form.patientAge) }}
+                            {{ form_errors(form.patientAge) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.gender) }}
+                            {{ form_widget(form.gender) }}
+                            {{ form_errors(form.gender) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            {{ form_label(form.preferredDate) }}
+                            {{ form_widget(form.preferredDate) }}
+                            {{ form_errors(form.preferredDate) }}
+                        </div>
+                        <div class="form-group half-width">
+                            {{ form_label(form.preferredTime) }}
+                            {{ form_widget(form.preferredTime) }}
+                            {{ form_errors(form.preferredTime) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.medicalHistory) }}
+                            {{ form_widget(form.medicalHistory) }}
+                            {{ form_errors(form.medicalHistory) }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form_label(form.message) }}
+                            {{ form_widget(form.message) }}
+                            {{ form_errors(form.message) }}
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        {{ form_widget(form.submit) }}
+                        <a href="{{ path('app_service_show', {'id': service.id}) }}" class="btn btn-secondary">Back to Service</a>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grid_4">
+        <div class="appointment-sidebar">
+            {% if service.availableTimes is not empty %}
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-clock-o"></i> Available Times</h3>
+                </div>
+                <div class="card-body">
+                    <div class="available-times">
+                        {% for day, times in service.availableTimes %}
+                            {% if times is not empty %}
+                            <div class="time-slot">
+                                <strong>{{ day|capitalize }}:</strong>
+                                <div class="times">
+                                    {% for time in times %}
+                                        <span class="time-badge">{{ time }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-info-circle"></i> Appointment Guidelines</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="guideline-list">
+                        <li><i class="icon-check"></i> Appointment confirmation required</li>
+                        <li><i class="icon-check"></i> Arrive 15 minutes early</li>
+                        <li><i class="icon-check"></i> Bring valid ID and insurance</li>
+                        <li><i class="icon-check"></i> Cancel 24 hours in advance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-phone"></i> Contact Information</h3>
+                </div>
+                <div class="card-body">
+                    {% if service.phone %}
+                    <p><i class="icon-phone"></i> <strong>Phone:</strong> {{ service.phone }}</p>
+                    {% endif %}
+                    {% if service.email %}
+                    <p><i class="icon-envelope"></i> <strong>Email:</strong> {{ service.email }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.service-info-card {
+    margin: 2rem 0 1rem 0;
+}
+
+.service-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.speciality-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.appointment-form-container {
+    margin: 1rem 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-row .form-group.half-width {
+    flex: 0 0 calc(50% - 0.5rem);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+}
+
+.appointment-sidebar {
+    margin: 2rem 0;
+}
+
+.available-times {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.time-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.time-badge {
+    background: #f8f9fa;
+    color: #495057;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid #dee2e6;
+}
+
+.guideline-list {
+    list-style: none;
+    padding: 0;
+}
+
+.guideline-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.guideline-list li:last-child {
+    border-bottom: none;
+}
+
+.guideline-list i {
+    color: #28a745;
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-row .form-group.half-width {
+        flex: 1;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+{% endblock %}

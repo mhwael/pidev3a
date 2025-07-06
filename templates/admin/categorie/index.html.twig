@@ -1,0 +1,320 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Category Management - Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="admin-content">
+    <div class="container_12">
+        <div class="grid_12">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1><i class="icon-list"></i> Category Management</h1>
+                <a href="{{ path('admin_categorie_new') }}" class="btn btn-success btn-lg">
+                    <i class="icon-plus"></i> Add New Category
+                </a>
+            </div>
+
+            <!-- Flash Messages -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <i class="icon-check-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    <i class="icon-exclamation-triangle"></i> {{ message }}
+                </div>
+            {% endfor %}
+
+            <!-- Categories Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="icon-list"></i> All Categories ({{ categories|length }})</h2>
+                </div>
+                <div class="card-body">
+                    {% if categories|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="icon-hash"></i> ID</th>
+                                        <th><i class="icon-tag"></i> Type</th>
+                                        <th><i class="icon-align-left"></i> Description</th>
+                                        <th><i class="icon-stethoscope"></i> Services</th>
+                                        <th><i class="icon-calendar"></i> Created</th>
+                                        <th><i class="icon-cogs"></i> Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for categorie in categories %}
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-light">#{{ categorie.id }}</span>
+                                            </td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    {% if categorie.type == 'Home Visit' %}
+                                                        <i class="icon-home" style="color: #28a745; font-size: 1.2rem;" title="Home Visit"></i>
+                                                    {% elseif categorie.type == 'In Cabinet' %}
+                                                        <i class="icon-building" style="color: #17a2b8; font-size: 1.2rem;" title="In Cabinet"></i>
+                                                    {% elseif categorie.type == 'Online' %}
+                                                        <i class="icon-laptop" style="color: #6f42c1; font-size: 1.2rem;" title="Online"></i>
+                                                    {% endif %}
+                                                    <div>
+                                                        <strong style="color: #495057; font-size: 1.1rem;">{{ categorie.type }}</strong>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style="max-width: 300px;">
+                                                    {% if categorie.description %}
+                                                        <span style="color: #6c757d;">{{ categorie.description|slice(0, 120) }}{% if categorie.description|length > 120 %}...{% endif %}</span>
+                                                    {% else %}
+                                                        <em style="color: #adb5bd;">No description provided</em>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <span class="stats-badge">{{ categorie.servicesCount }}</span>
+                                                    {% if categorie.servicesCount > 0 %}
+                                                        <i class="icon-check" style="color: #28a745;" title="Has services"></i>
+                                                    {% else %}
+                                                        <i class="icon-minus" style="color: #dc3545;" title="No services"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td style="color: #6c757d;">
+                                                <div>
+                                                    <i class="icon-calendar"></i> {{ categorie.createdAt|date('M j, Y') }}
+                                                </div>
+                                                <small style="color: #adb5bd;">{{ categorie.createdAt|date('g:i A') }}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" style="gap: 0.25rem;">
+                                                    <a href="{{ path('admin_categorie_show', {'id': categorie.id}) }}" 
+                                                       class="btn btn-info btn-sm" 
+                                                       title="View Details">
+                                                        <i class="icon-eye"></i>
+                                                    </a>
+                                                    <a href="{{ path('admin_categorie_edit', {'id': categorie.id}) }}" 
+                                                       class="btn btn-warning btn-sm" 
+                                                       title="Edit Category">
+                                                        <i class="icon-edit"></i>
+                                                    </a>
+                                                    {% if categorie.servicesCount == 0 %}
+                                                        <form method="post" 
+                                                              action="{{ path('admin_categorie_delete', {'id': categorie.id}) }}" 
+                                                              style="display: inline-block;" 
+                                                              onsubmit="return confirm('⚠️ Are you sure you want to delete this category?\n\nThis action cannot be undone.')">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete Category">
+                                                                <i class="icon-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    {% else %}
+                                                        <button class="btn btn-danger btn-sm" 
+                                                                disabled 
+                                                                title="Cannot delete category with services"
+                                                                style="opacity: 0.5; cursor: not-allowed;">
+                                                            <i class="icon-trash"></i>
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 4rem 0;">
+                            <i class="icon-list" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                            <h3 style="color: #6c757d; margin-bottom: 1rem;">No categories found</h3>
+                            <p style="color: #6c757d; margin-bottom: 2rem;">Get started by creating your first medical category.</p>
+                            <a href="{{ path('admin_categorie_new') }}" class="btn btn-success btn-lg">
+                                <i class="icon-plus"></i> Create First Category
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid_12" style="margin-top: 2rem;">
+                <div class="grid_4 alpha">
+                    <div class="stats-card">
+                        <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="icon-list"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h4>Total Categories</h4>
+                            <div class="number" style="color: #667eea;">{{ categories|length }}</div>
+                            <small style="color: #6c757d;">All category types</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_4">
+                    <div class="stats-card">
+                        <div class="stats-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                            <i class="icon-stethoscope"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h4>Total Services</h4>
+                            <div class="number" style="color: #28a745;">
+                                {% set totalServices = 0 %}
+                                {% for categorie in categories %}
+                                    {% set totalServices = totalServices + categorie.servicesCount %}
+                                {% endfor %}
+                                {{ totalServices }}
+                            </div>
+                            <small style="color: #6c757d;">Across all categories</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_4 omega">
+                    <div class="stats-card">
+                        <div class="stats-icon" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);">
+                            <i class="icon-chart-bar"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h4>Avg Services</h4>
+                            <div class="number" style="color: #17a2b8;">
+                                {% if categories|length > 0 %}
+                                    {{ (totalServices / categories|length)|round(1) }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </div>
+                            <small style="color: #6c757d;">Per category</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #e9ecef;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        color: #495057;
+        font-size: 1.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .stats-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        min-width: 2rem;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: none;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stats-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .stats-content {
+        flex: 1;
+    }
+    
+    .stats-content h4 {
+        margin: 0 0 0.5rem 0;
+        color: #495057;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .stats-content .number {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0.25rem 0;
+        line-height: 1;
+    }
+    
+    .stats-content small {
+        font-size: 0.8rem;
+        margin: 0;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+        border-radius: 8px;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: none;
+    }
+    
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+    
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa !important;
+        color: #6c757d !important;
+    }
+</style>
+{% endblock %}

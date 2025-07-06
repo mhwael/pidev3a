@@ -1,0 +1,494 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-calendar"></i> Appointment Details</h1>
+            <p>Reference: #APT{{ appointment.id|number_format(0, '', '') }}</p>
+        </div>
+    </div>
+</section>
+
+<div class="container_12">
+    <div class="grid_8">
+        <div class="appointment-details-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="icon-user"></i> {{ appointment.patientName }}</h2>
+                    <span class="status-badge {{ appointment.statusBadgeClass }}">
+                        {{ appointment.status|capitalize }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="appointment-info">
+                        <h3><i class="icon-calendar"></i> Appointment Information</h3>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>Service:</strong>
+                                <div class="service-info">
+                                    <span class="service-name">{{ appointment.service.name }}</span>
+                                    <span class="speciality-badge">{{ appointment.service.speciality }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Date & Time:</strong>
+                                <div class="datetime-info">
+                                    <span class="date-highlight">{{ appointment.formattedDate }}</span>
+                                    <span class="time-highlight">{{ appointment.formattedTime }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Location:</strong>
+                                <span>{{ appointment.service.location }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Patient Name:</strong>
+                                <span>{{ appointment.patientName }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Email:</strong>
+                                <span>{{ appointment.email }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Phone:</strong>
+                                <span>{{ appointment.phone }}</span>
+                            </div>
+                            
+                            {% if appointment.patientAge %}
+                            <div class="info-item">
+                                <strong>Age:</strong>
+                                <span>{{ appointment.patientAge }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if appointment.gender %}
+                            <div class="info-item">
+                                <strong>Gender:</strong>
+                                <span>{{ appointment.gender|capitalize }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="info-item">
+                                <strong>Booking Date:</strong>
+                                <span>{{ appointment.createdAt.format('M d, Y \\a\\t H:i') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if appointment.medicalHistory %}
+                    <div class="additional-section">
+                        <h3><i class="icon-file-medical"></i> Medical History</h3>
+                        <div class="content-box">
+                            <p>{{ appointment.medicalHistory|nl2br }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if appointment.message %}
+                    <div class="additional-section">
+                        <h3><i class="icon-comment"></i> Additional Message</h3>
+                        <div class="content-box">
+                            <p>{{ appointment.message|nl2br }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="icon-info-circle"></i> Status Information</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if appointment.status == 'pending' %}
+                            <div class="status-message pending">
+                                <i class="icon-clock-o"></i>
+                                <div>
+                                    <h4>Awaiting Confirmation</h4>
+                                    <p>Your appointment is currently pending confirmation. Our team will contact you within 24 hours at {{ appointment.phone }} to confirm the details.</p>
+                                </div>
+                            </div>
+                        {% elseif appointment.status == 'confirmed' %}
+                            <div class="status-message confirmed">
+                                <i class="icon-check-circle"></i>
+                                <div>
+                                    <h4>Confirmed</h4>
+                                    <p>Your appointment has been confirmed! Please arrive 15 minutes before your scheduled time and bring a valid ID and insurance card.</p>
+                                </div>
+                            </div>
+                        {% elseif appointment.status == 'cancelled' %}
+                            <div class="status-message cancelled">
+                                <i class="icon-times-circle"></i>
+                                <div>
+                                    <h4>Cancelled</h4>
+                                    <p>This appointment has been cancelled. If you need to reschedule, please contact us or book a new appointment.</p>
+                                </div>
+                            </div>
+                        {% elseif appointment.status == 'completed' %}
+                            <div class="status-message completed">
+                                <i class="icon-check"></i>
+                                <div>
+                                    <h4>Completed</h4>
+                                    <p>This appointment has been completed. We hope you had a positive experience with our services.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ path('app_my_appointments', {'email': appointment.email}) }}" class="btn btn-secondary">
+                    <i class="icon-arrow-left"></i> Back to My Appointments
+                </a>
+                <a href="{{ path('app_appointment_pdf', {'id': appointment.id}) }}" class="btn btn-info" target="_blank">
+                    <i class="icon-download"></i> Download PDF
+                </a>
+                <a href="{{ path('app_appointments') }}" class="btn btn-primary">
+                    <i class="icon-calendar"></i> Book New Appointment
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid_4">
+        <div class="sidebar-info">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-user-md"></i> Doctor Information</h3>
+                </div>
+                <div class="card-body">
+                    <h4>{{ appointment.service.name }}</h4>
+                    <p><strong>Speciality:</strong> {{ appointment.service.speciality }}</p>
+                    <p><strong>Location:</strong> {{ appointment.service.location }}</p>
+                    
+                    {% if appointment.service.description %}
+                    <div class="doctor-description">
+                        <p>{{ appointment.service.description|slice(0, 200) }}{% if appointment.service.description|length > 200 %}...{% endif %}</p>
+                        <a href="{{ path('app_service_show', {'id': appointment.service.id}) }}" class="btn btn-info btn-sm">
+                            <i class="icon-info-circle"></i> Full Profile
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if appointment.service.phone %}
+                    <div class="contact-info">
+                        <p><i class="icon-phone"></i> <strong>Direct Phone:</strong><br>{{ appointment.service.phone }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if appointment.service.email %}
+                    <div class="contact-info">
+                        <p><i class="icon-envelope"></i> <strong>Direct Email:</strong><br>{{ appointment.service.email }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-question-circle"></i> Need Help?</h3>
+                </div>
+                <div class="card-body">
+                    <p>If you have questions about your appointment:</p>
+                    
+                    <div class="help-options">
+                        <div class="help-option">
+                            <i class="icon-phone"></i>
+                            <div>
+                                <strong>Call Us</strong><br>
+                                <a href="tel:+15551234567">(555) 123-4567</a>
+                            </div>
+                        </div>
+                        
+                        <div class="help-option">
+                            <i class="icon-envelope"></i>
+                            <div>
+                                <strong>Email Support</strong><br>
+                                <a href="mailto:appointments@salutem-medical.com">appointments@salutem-medical.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ path('app_contacts') }}" class="btn btn-info btn-sm">
+                        <i class="icon-envelope"></i> Contact Form
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-info-circle"></i> Important Notes</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="notes-list">
+                        <li><i class="icon-clock-o"></i> Arrive 15 minutes early</li>
+                        <li><i class="icon-id-card"></i> Bring valid ID and insurance card</li>
+                        <li><i class="icon-phone"></i> Call if you need to reschedule</li>
+                        <li><i class="icon-calendar"></i> Cancel at least 24 hours in advance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.appointment-details-container {
+    margin: 2rem 0;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.appointment-info {
+    margin-bottom: 2rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.info-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.info-item strong {
+    display: block;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.service-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.speciality-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    align-self: flex-start;
+}
+
+.datetime-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.date-highlight {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.time-highlight {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.additional-section {
+    margin: 2rem 0;
+}
+
+.additional-section h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.content-box {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #17a2b8;
+}
+
+.status-section {
+    margin: 2rem 0;
+}
+
+.status-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.status-message.pending {
+    background: linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(253,126,20,0.1) 100%);
+    border-left: 4px solid #ffc107;
+}
+
+.status-message.confirmed {
+    background: linear-gradient(135deg, rgba(40,167,69,0.1) 0%, rgba(32,201,151,0.1) 100%);
+    border-left: 4px solid #28a745;
+}
+
+.status-message.cancelled {
+    background: linear-gradient(135deg, rgba(220,53,69,0.1) 0%, rgba(253,126,20,0.1) 100%);
+    border-left: 4px solid #dc3545;
+}
+
+.status-message.completed {
+    background: linear-gradient(135deg, rgba(23,162,184,0.1) 0%, rgba(111,66,193,0.1) 100%);
+    border-left: 4px solid #17a2b8;
+}
+
+.status-message i {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+
+.status-message.pending i { color: #ffc107; }
+.status-message.confirmed i { color: #28a745; }
+.status-message.cancelled i { color: #dc3545; }
+.status-message.completed i { color: #17a2b8; }
+
+.status-message h4 {
+    margin: 0 0 0.5rem 0;
+    color: #2c3e50;
+}
+
+.status-message p {
+    margin: 0;
+    color: #666;
+    line-height: 1.6;
+}
+
+.action-buttons {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sidebar-info {
+    margin: 2rem 0;
+}
+
+.doctor-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.contact-info {
+    margin: 1rem 0;
+}
+
+.contact-info i {
+    color: #667eea;
+    margin-right: 0.5rem;
+}
+
+.help-options {
+    margin: 1rem 0;
+}
+
+.help-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.help-option i {
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.notes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.notes-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notes-list li:last-child {
+    border-bottom: none;
+}
+
+.notes-list i {
+    color: #667eea;
+    width: 16px;
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .help-option {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .status-message {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

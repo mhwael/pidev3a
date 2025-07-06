@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Admin Dashboard - Salutem Medical Center{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+    
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('font/font-awesome.css') }}" type="text/css" media="screen">
+        <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    {% endblock %}
+    
+    {% block javascripts %}
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('js/script.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container_12">
+            <div class="grid_12">
+                <h1><i class="icon-cogs"></i> Admin Dashboard - Salutem Medical Center</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Navigation -->
+    <div class="admin-nav">
+        <div class="container_12">
+            <div class="grid_12">
+                <nav>
+                    <ul>
+                        <li><a href="{{ path('admin_categorie_index') }}" {% if app.request.get('_route')|slice(0, 15) == 'admin_categorie' %}class="active"{% endif %}><i class="icon-list"></i> Categories</a></li>
+                        <li><a href="{{ path('admin_service_index') }}" {% if app.request.get('_route')|slice(0, 13) == 'admin_service' %}class="active"{% endif %}><i class="icon-user-md"></i> Services</a></li>
+                        <li><a href="{{ path('admin_appointment_index') }}" {% if app.request.get('_route')|slice(0, 17) == 'admin_appointment' %}class="active"{% endif %}><i class="icon-calendar"></i> Appointments</a></li>
+                        <li><a href="{{ path('app_home') }}"><i class="icon-home"></i> Back to Site</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="container_12">
+                <div class="grid_12">
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <!-- Content -->
+    <div class="admin-content">
+        <div class="container_12">
+            <div class="grid_12">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Footer -->
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 1rem 0; margin-top: 2rem;">
+        <div class="container_12">
+            <div class="grid_12">
+                <p>&copy; {{ "now"|date("Y") }} Salutem Medical Center - Admin Dashboard</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

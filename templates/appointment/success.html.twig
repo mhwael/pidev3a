@@ -1,0 +1,387 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="services-header">
+    <div class="container_12">
+        <div class="grid_12">
+            <h1><i class="icon-check-circle"></i> Appointment Confirmed!</h1>
+            <p>Your appointment has been successfully booked</p>
+        </div>
+    </div>
+</section>
+
+<div class="container_12">
+    <div class="grid_8">
+        <div class="success-container">
+            <div class="card success-card">
+                <div class="card-header">
+                    <h2><i class="icon-calendar"></i> Appointment Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="success-message">
+                        <div class="success-icon">
+                            <i class="icon-check-circle"></i>
+                        </div>
+                        <h3>Thank you, {{ appointment.patientName }}!</h3>
+                        <p>Your appointment has been successfully booked. We will contact you at {{ appointment.phone }} to confirm the details.</p>
+                    </div>
+
+                    <div class="appointment-summary">
+                        <h4>Appointment Summary</h4>
+                        
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <strong>Service:</strong>
+                                <span>{{ appointment.service.name }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Speciality:</strong>
+                                <span class="speciality-badge">{{ appointment.service.speciality }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Patient:</strong>
+                                <span>{{ appointment.patientName }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Email:</strong>
+                                <span>{{ appointment.email }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Phone:</strong>
+                                <span>{{ appointment.phone }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Preferred Date:</strong>
+                                <span class="date-highlight">{{ appointment.formattedDate }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Preferred Time:</strong>
+                                <span class="time-highlight">{{ appointment.formattedTime }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Status:</strong>
+                                <span class="status-badge {{ appointment.statusBadgeClass }}">{{ appointment.status|capitalize }}</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <strong>Booking Reference:</strong>
+                                <span class="reference-code">#APT{{ appointment.id|number_format(0, '', '') }}</span>
+                            </div>
+                            
+                            {% if appointment.patientAge %}
+                            <div class="summary-item">
+                                <strong>Patient Age:</strong>
+                                <span>{{ appointment.patientAge }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if appointment.gender %}
+                            <div class="summary-item">
+                                <strong>Gender:</strong>
+                                <span>{{ appointment.gender|capitalize }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% if appointment.medicalHistory %}
+                        <div class="additional-info">
+                            <h5>Medical History:</h5>
+                            <p>{{ appointment.medicalHistory }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if appointment.message %}
+                        <div class="additional-info">
+                            <h5>Additional Message:</h5>
+                            <p>{{ appointment.message }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="icon-list-ol"></i> What's Next?</h3>
+                    </div>
+                    <div class="card-body">
+                        <ol class="steps-list">
+                            <li>
+                                <strong>Confirmation Call:</strong> 
+                                Our team will contact you within 24 hours to confirm your appointment.
+                            </li>
+                            <li>
+                                <strong>Email Confirmation:</strong> 
+                                You will receive an email confirmation with all the details.
+                            </li>
+                            <li>
+                                <strong>Preparation:</strong> 
+                                Please bring a valid ID and your insurance card to the appointment.
+                            </li>
+                            <li>
+                                <strong>Arrival:</strong> 
+                                Please arrive 15 minutes before your scheduled time.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ path('app_appointment_view', {'id': appointment.id}) }}" class="btn btn-primary">
+                    <i class="icon-eye"></i> View Full Details
+                </a>
+                <a href="{{ path('app_appointments') }}" class="btn btn-success">
+                    <i class="icon-calendar"></i> Book Another Appointment
+                </a>
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                    <i class="icon-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid_4">
+        <div class="sidebar-info">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-phone"></i> Need Help?</h3>
+                </div>
+                <div class="card-body">
+                    <p>If you have any questions about your appointment:</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-item">
+                            <i class="icon-phone"></i>
+                            <div>
+                                <strong>Call Us:</strong>
+                                <br>(555) 123-4567
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="icon-envelope"></i>
+                            <div>
+                                <strong>Email:</strong>
+                                <br>appointments@salutem-medical.com
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ path('app_contacts') }}" class="btn btn-info btn-sm">Contact Form</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="icon-user-md"></i> Doctor Information</h3>
+                </div>
+                <div class="card-body">
+                    <h4>{{ appointment.service.name }}</h4>
+                    <p><strong>Speciality:</strong> {{ appointment.service.speciality }}</p>
+                    <p><strong>Location:</strong> {{ appointment.service.location }}</p>
+                    
+                    {% if appointment.service.phone %}
+                    <p><strong>Direct Phone:</strong> {{ appointment.service.phone }}</p>
+                    {% endif %}
+                    
+                    {% if appointment.service.email %}
+                    <p><strong>Direct Email:</strong> {{ appointment.service.email }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.success-container {
+    margin: 2rem 0;
+}
+
+.success-card {
+    border-left: 5px solid #28a745;
+}
+
+.success-message {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(40,167,69,0.1) 0%, rgba(32,201,151,0.1) 100%);
+    border-radius: 10px;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.success-message h3 {
+    color: #155724;
+    margin-bottom: 1rem;
+}
+
+.appointment-summary {
+    margin-top: 2rem;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+}
+
+.summary-item strong {
+    color: #2c3e50;
+}
+
+.speciality-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.date-highlight {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.time-highlight {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.reference-code {
+    font-family: monospace;
+    background: #e9ecef;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.additional-info {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #17a2b8;
+}
+
+.additional-info h5 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.next-steps {
+    margin: 2rem 0;
+}
+
+.steps-list {
+    counter-reset: step-counter;
+}
+
+.steps-list li {
+    counter-increment: step-counter;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.steps-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.action-buttons {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sidebar-info {
+    margin: 2rem 0;
+}
+
+.contact-methods {
+    margin: 1rem 0;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.contact-item i {
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+    }
+    
+    .summary-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+</style>
+{% endblock %}

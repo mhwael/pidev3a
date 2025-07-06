@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Form Submission</title>
+</head>
+<body>
+    <h2>New Contact Form Submission</h2>
+    
+    <p><strong>Visitor:</strong> {{ data.name }}</p>
+    
+    {% if data.email %}
+        <p><strong>Email Address:</strong> {{ data.email }}</p>
+    {% endif %}
+    
+    {% if data.state %}
+        <p><strong>State:</strong> {{ data.state }}</p>
+    {% endif %}
+    
+    {% if data.phone %}
+        <p><strong>Phone Number:</strong> {{ data.phone }}</p>
+    {% endif %}
+    
+    {% if data.fax %}
+        <p><strong>Fax Number:</strong> {{ data.fax }}</p>
+    {% endif %}
+    
+    {% if data.message %}
+        <p><strong>Message:</strong></p>
+        <p>{{ data.message|nl2br }}</p>
+    {% endif %}
+</body>
+</html>

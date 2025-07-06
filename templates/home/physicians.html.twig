@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<!--=======content================================-->
+<div class="wrapper marBot3">
+    <div class="container_12">
+        <div class="grid_12">
+            <h2 class="v3">Our Physicians</h2>
+            <div class="grid_4 alpha mobile_bottom_mar">
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic1.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. John Smith</a></h3>
+                    <p><strong>Cardiology / Heart Care</strong></p>
+                    <p>Dr. Smith specializes in cardiovascular medicine with over 15 years of experience treating heart conditions.</p>
+                </div>
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic4.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. Sarah Johnson</a></h3>
+                    <p><strong>Internal Medicine</strong></p>
+                    <p>Dr. Johnson provides comprehensive internal medicine care for adult patients with various health conditions.</p>
+                </div>
+            </div>
+            <div class="grid_4">
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic2.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. Michael Brown</a></h3>
+                    <p><strong>Family Medicine</strong></p>
+                    <p>Dr. Brown offers complete family medical care for patients of all ages, from children to seniors.</p>
+                </div>
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic5.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. Lisa Wilson</a></h3>
+                    <p><strong>Pediatrics</strong></p>
+                    <p>Dr. Wilson specializes in pediatric care, providing medical services for infants, children, and adolescents.</p>
+                </div>
+            </div>
+            <div class="grid_4 omega">
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic3.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. David Davis</a></h3>
+                    <p><strong>Orthopedics</strong></p>
+                    <p>Dr. Davis is an orthopedic surgeon specializing in musculoskeletal disorders and sports injuries.</p>
+                </div>
+                <div class="wrapper marBot2">
+                    <img src="{{ asset('images/page3_pic6.jpg') }}" alt="" class="img3">
+                    <h3><a href="#">Dr. Jennifer Taylor</a></h3>
+                    <p><strong>Gynecology</strong></p>
+                    <p>Dr. Taylor provides comprehensive women's health services including preventive care and treatments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="gray_bg">
+    <div class="container_12">
+        <div class="grid_12">
+            <h2>Why Choose Our Doctors?</h2>
+            <div class="grid_6 alpha">
+                <h3>Excellence in Care</h3>
+                <p>Our physicians are board-certified specialists with extensive training and experience in their respective fields. They are committed to providing the highest quality medical care using the latest treatment methods and technologies.</p>
+                
+                <h3>Patient-Centered Approach</h3>
+                <p>We believe in treating each patient as an individual with unique needs. Our doctors take the time to listen, understand, and develop personalized treatment plans that address your specific health concerns.</p>
+            </div>
+            <div class="grid_6 omega">
+                <h3>Continuing Education</h3>
+                <p>Our medical staff regularly participates in continuing education programs and medical conferences to stay current with the latest advances in medical research and treatment options.</p>
+                
+                <h3>Collaborative Care</h3>
+                <p>Our physicians work together as a team to ensure comprehensive care. When needed, they collaborate with specialists to provide the most effective treatment for complex medical conditions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
